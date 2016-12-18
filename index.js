@@ -10,15 +10,15 @@ module.exports = function () {
   var interfaces
 
   try {
-      interfaces = os.networkInterfaces();
+      interfaces = os.networkInterfaces()
   } catch (e) {
       // As of October 2016, Windows Subsystem for Linux (WSL) does not support
       // the os.networkInterfaces() call and throws instead. For this platform,
       // assume we are online.
       if (e.syscall === 'uv_interface_addresses') {
-          return false;
+          return true
       } else {
-          throw e;
+          throw e
       }
   }
 
