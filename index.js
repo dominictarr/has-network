@@ -7,7 +7,21 @@
 
 var os = require('os')
 module.exports = function () {
-  var interfaces = os.networkInterfaces()
+  var interfaces
+
+  try {
+      interfaces = os.networkInterfaces();
+  } catch (e) {
+      // As of October 2016, Windows Subsystem for Linux (WSL) does not support
+      // the os.networkInterfaces() call and throws instead. For this platform,
+      // assume we are online.
+      if (e.syscall === 'uv_interface_addresses') {
+          return false;
+      } else {
+          throw e;
+      }
+  }
+
   for(var k in interfaces)
     if(
       'lo' !== k //loopback
